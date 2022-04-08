@@ -7,3 +7,4 @@ The application lets you dispatch typical GET/POST/PUT/DELETE requests to an end
 
 ![queryUI](https://github.com/NixonInnes/queryUI/blob/master/screenshots/Screenshot%20from%202022-04-08%2019-00-25.png)
 
+![queryUI](https://github.com/NixonInnes/queryUI/blob/master/screenshots/Screenshot%20from%202022-04-08%2019-01-26.png)
