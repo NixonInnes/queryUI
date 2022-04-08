@@ -4,11 +4,11 @@
 block_cipher = None
 
 
-a = Analysis(['queryUI/__main__.py'],
+a = Analysis(['queryUI\\__main__.py'],
              pathex=[],
              binaries=[],
              datas=[],
-             hiddenimports=[],
+             hiddenimports=['tkinter'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

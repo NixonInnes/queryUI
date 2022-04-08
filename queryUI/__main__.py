@@ -1,3 +1,3 @@
-from . import app
+from queryUI import app
 
 app.mainloop()
