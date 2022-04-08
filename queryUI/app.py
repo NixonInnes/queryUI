@@ -2,6 +2,7 @@ import toml
 import tkinter as tk
 from tkinter.messagebox import showerror
 from tkinter.filedialog import asksaveasfile
+from pprint import pformat
 
 from .frames.radio import RadioFrame
 from .frames.entry import EntryFrame, ParamsEntryFrame, HeaderEntryFrame, DataEntryFrame
@@ -75,7 +76,7 @@ class App(tk.Tk):
                 try:
                     content = toml.dumps(result.json())
                 except:
-                    content = result.content
+                    content = pformat(result.json())
             else:
                 content = result.content
 
