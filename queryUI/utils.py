@@ -22,7 +22,7 @@ def query_url(
     data: str = ""
 ):
     func = getattr(requests, method)
-    resp = func(url, params=params, headers=headers, data=data)
+    resp = func(url, params=params, headers=headers, data=json.dumps(data))
     return resp
 
 
