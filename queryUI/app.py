@@ -100,6 +100,9 @@ class App(tk.Tk):
         self.clipboard_append(self.results.text.get("1.0", "end"))
 
     def display_results(self):
+        if self.last_result is None:
+            return
+        
         if self.results.pretty.get():
             # check if valid json
             try:

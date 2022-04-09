@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
@@ -66,10 +67,37 @@ class HeaderEntryFrame(BaseFrame):
         self.text = ScrolledText(self.frame, height=5)
         self.text.pack(fill="both", expand=True)
 
+        self.text.bind("<KeyRelease>", self.validate_json)
+
+    def validate_json(self, event):
+        text = self.text.get("1.0", "end")
+        if text.strip() == "":
+            self.text["background"] = "white"
+        else:
+            try:
+                json.loads(text)
+                self.text["background"] = "DarkSeaGreen1"
+            except:
+                self.text["background"] = "RosyBrown1"
+
 
 class DataEntryFrame(BaseFrame):
     def setup(self):
         label = ttk.Label(self.frame, text="Data")
         label.pack(fill="x", **options.padding_title)
+
         self.text = ScrolledText(self.frame, height=5)
         self.text.pack(fill="both", expand=True)
+
+        self.text.bind("<KeyRelease>", self.validate_json)
+
+    def validate_json(self, event):
+        text = self.text.get("1.0", "end")
+        if text.strip() == "":
+            self.text["background"] = "white"
+        else:
+            try:
+                json.loads(text)
+                self.text["background"] = "DarkSeaGreen1"
+            except:
+                self.text["background"] = "RosyBrown1"
