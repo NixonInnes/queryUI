@@ -20,6 +20,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("queryUI")
+        self.last_result = None
 
         self.radio = RadioFrame(self)
         self.radio.frame.pack(fill="x", **options.padding_tight)
@@ -39,7 +40,7 @@ class App(tk.Tk):
         self.submit = SubmitButtonFrame(self, on_click=self.submit_button_clicked)
         self.submit.frame.pack(fill="x", **options.padding_tight)
 
-        self.results = ResultsFrame(self)
+        self.results = ResultsFrame(self, on_check=self.display_results)
         self.results.frame.pack(fill="x", **options.padding_tight)
 
         self.save = SaveButtonsFrame(
@@ -67,20 +68,9 @@ class App(tk.Tk):
             data = parse_json_to_dict(
                 self.data.text.get("1.0", "end"), field_name="Data")
 
-            result = query_url(url, method, params=params,
-                               data=data, headers=headers)
-
-            self.results.text.delete("1.0", "end")
-
-            if self.results.pretty.get():
-                try:
-                    content = toml.dumps(result.json())
-                except:
-                    content = pformat(result.json())
-            else:
-                content = result.content
-
-            self.results.text.insert("1.0", content)
+            self.last_result = result = query_url(url, method, params=params,
+                                                  data=data, headers=headers)
+            self.display_results()
             self.status.set_text(f"{method.upper()} {result.url}")
             self.status.set_code(str(result.status_code))
         except Exception as e:
@@ -108,6 +98,33 @@ class App(tk.Tk):
     def clipboard_button_clicked(self):
         self.clipboard_clear()
         self.clipboard_append(self.results.text.get("1.0", "end"))
+
+    def display_results(self):
+        if self.results.pretty.get():
+            # check if valid json
+            try:
+                dic = self.last_result.json()
+            except Exception as e:
+                dic = None
+
+            # if not valid json, just display raw content
+            if not dic:
+                self.set_results_content(self.last_result.content)
+                return
+
+            # try toml, if that fails pprint style
+            try:
+                formatted = toml.dumps(dic)
+                self.set_results_content(formatted)
+            except:
+                formatted = pformat(dic)
+                self.set_results_content(formatted)
+        else:
+            self.set_results_content(self.last_result.content)
+
+    def set_results_content(self, content):
+        self.results.text.delete("1.0", "end")
+        self.results.text.insert("1.0", content)
 
     def resize(self, event):
         other_widgets_height = (

@@ -21,9 +21,10 @@ class ResultsFrame(BaseFrame):
             text="Pretty",
             variable=self.pretty,
             onvalue=True,
-            offvalue=False
+            offvalue=False,
+            command=self.callbacks["on_check"]
         )
-        create_tooltip(self.pretty_check, "Try convert the result to TOML")
+        create_tooltip(self.pretty_check, "Try convert the result to TOML or pretty print")
         self.pretty_check.pack(fill="x", **options.padding_tight)
         self.text = ScrolledText(self.frame)
         self.text.pack(fill="both", expand=True)
