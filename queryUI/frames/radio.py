@@ -24,3 +24,4 @@ class RadioFrame(BaseFrame):
                 variable=self.selected,
             )
             radio.pack(side="left", **options.padding_tight)
+        self.selected.set(radio_options[0].lower())
