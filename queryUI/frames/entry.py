@@ -21,13 +21,21 @@ class EntryFrame(BaseFrame):
 
 class ParamsEntryFrame(BaseFrame):
     def setup(self):
+        self.params = []
+        self.param_entries = []
+
         label = ttk.Label(self.frame, text="Parameters")
         label.pack(fill="x", **options.padding_title)
 
-        add_button = ttk.Button(self.frame, text="+")
-        add_button.pack(side="left", fill="y", **options.padding_tight)
+        button_frame = ttk.Frame(self.frame)
+        add_button = ttk.Button(button_frame, text="+")
+        add_button.pack(side="left", **options.padding_tight)
         add_button.configure(command=self.add_param)
-        self.params = []
+
+        sub_button = ttk.Button(button_frame, text="-")
+        sub_button.pack(side="left", **options.padding_tight)
+        sub_button.configure(command=self.sub_param)
+        button_frame.pack(fill="x")
 
     def add_param(self):
         param_frame = ttk.Frame(self.frame)
@@ -37,8 +45,17 @@ class ParamsEntryFrame(BaseFrame):
         param_value = tk.StringVar()
         param_value_entry = ttk.Entry(param_frame, textvariable=param_value)
         param_value_entry.pack(side="right", fill="x", expand=True, **options.padding)
-        param_frame.pack(fill="x")
+        param_frame.pack(fill="both")
         self.params.append((param_key, param_value))
+        self.param_entries.append((param_key_entry, param_value_entry, param_frame))
+
+    def sub_param(self):
+        if self.params:
+            del self.params[-1]
+            param_key_entry, param_value_entry, param_frame = self.param_entries.pop()
+            param_key_entry.destroy()
+            param_value_entry.destroy()
+            param_frame.destroy()
 
 
 class HeaderEntryFrame(BaseFrame):
