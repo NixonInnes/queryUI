@@ -52,7 +52,7 @@ class App(tk.Tk):
         self.status.frame.pack(fill="x", side="bottom")
 
         self.bind("<Configure>", self.resize)
-        self.geometry('1000x800+0+0')
+        self.geometry("1000x800")
 
     def submit_button_clicked(self):
         try:
