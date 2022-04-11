@@ -1,8 +1,6 @@
-import toml
 import tkinter as tk
 from tkinter.messagebox import showerror
 from tkinter.filedialog import asksaveasfile
-from pprint import pformat
 
 from .frames.radio import RadioFrame
 from .frames.entry import EntryFrame, ParamsEntryFrame, HeaderEntryFrame, DataEntryFrame
@@ -40,7 +38,7 @@ class App(tk.Tk):
         self.submit = SubmitButtonFrame(self, on_click=self.submit_button_clicked)
         self.submit.frame.pack(fill="x", **options.padding_tight)
 
-        self.results = ResultsFrame(self, on_check=self.display_results)
+        self.results = ResultsFrame(self, on_check=self.update_results)
         self.results.frame.pack(fill="x", **options.padding_tight)
 
         self.save = SaveButtonsFrame(
@@ -70,7 +68,7 @@ class App(tk.Tk):
 
             self.last_result = result = query_url(url, method, params=params,
                                                   data=data, headers=headers)
-            self.display_results()
+            self.update_results()
             self.status.set_text(f"{method.upper()} {result.url}")
             self.status.set_code(str(result.status_code))
         except Exception as e:
@@ -99,42 +97,10 @@ class App(tk.Tk):
         self.clipboard_clear()
         self.clipboard_append(self.results.text.get("1.0", "end"))
 
-    def display_results(self, event=None):
+    def update_results(self, event=None):
         if self.last_result is None:
             return
-
-        if self.results.pretty.get():
-            
-            # check if valid json
-            try:
-                dic = self.last_result.json()
-            except Exception as e:
-                dic = None
-
-            # if not valid json, just display raw content
-            if not dic:
-                self.results.set_content(self.last_result.content)
-                return
-
-            # try toml, if that fails pprint style
-            if self.results.pretty_mode.get() == "TOML":
-                try:
-                    formatted = toml.dumps(dic)
-                    self.results.set_content(formatted)
-                except:
-                    self.results.set_content(self.last_result.content)
-
-
-            elif self.results.pretty_mode.get() == "pprint":
-                try:
-                    formatted = pformat(dic)
-                    self.results.set_content(formatted)
-                except:
-                    self.results.set_content(self.last_result.content)
-        else:
-            self.results.set_content(self.last_result.content)
-
-
+        self.results.set_content(self.last_result.content.decode())
 
     def resize(self, event):
         other_widgets_height = (

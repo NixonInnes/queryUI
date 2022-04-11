@@ -78,3 +78,4 @@ def create_tooltip(widget, text):
 
     widget.bind('<Enter>', enter)
     widget.bind('<Leave>', leave)
+
