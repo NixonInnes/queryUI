@@ -10,6 +10,7 @@ a = Analysis(['queryUI\\__main__.py'],
              datas=[],
              hiddenimports=['tkinter'],
              hookspath=[],
+             hooksconfig={},
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
@@ -36,4 +37,4 @@ exe = EXE(pyz,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
-          entitlements_file=None )
+          entitlements_file=None , icon='queryUI.ico')

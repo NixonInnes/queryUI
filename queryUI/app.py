@@ -99,11 +99,12 @@ class App(tk.Tk):
         self.clipboard_clear()
         self.clipboard_append(self.results.text.get("1.0", "end"))
 
-    def display_results(self):
+    def display_results(self, event=None):
         if self.last_result is None:
             return
-        
+
         if self.results.pretty.get():
+            
             # check if valid json
             try:
                 dic = self.last_result.json()
@@ -112,22 +113,28 @@ class App(tk.Tk):
 
             # if not valid json, just display raw content
             if not dic:
-                self.set_results_content(self.last_result.content)
+                self.results.set_content(self.last_result.content)
                 return
 
             # try toml, if that fails pprint style
-            try:
-                formatted = toml.dumps(dic)
-                self.set_results_content(formatted)
-            except:
-                formatted = pformat(dic)
-                self.set_results_content(formatted)
-        else:
-            self.set_results_content(self.last_result.content)
+            if self.results.pretty_mode.get() == "TOML":
+                try:
+                    formatted = toml.dumps(dic)
+                    self.results.set_content(formatted)
+                except:
+                    self.results.set_content(self.last_result.content)
 
-    def set_results_content(self, content):
-        self.results.text.delete("1.0", "end")
-        self.results.text.insert("1.0", content)
+
+            elif self.results.pretty_mode.get() == "pprint":
+                try:
+                    formatted = pformat(dic)
+                    self.results.set_content(formatted)
+                except:
+                    self.results.set_content(self.last_result.content)
+        else:
+            self.results.set_content(self.last_result.content)
+
+
 
     def resize(self, event):
         other_widgets_height = (
