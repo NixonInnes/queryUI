@@ -84,7 +84,8 @@ class App(tk.Tk):
                     ("All Files", "*.*"),
                     ("Text Documents", "*.txt"),
                     ("JSON Documents", "*.json"),
-                    ("TOML Documents", "*.toml")
+                    ("TOML Documents", "*.toml"),
+                    ("YAML Documents", "*.yaml")
                 ]
             )
             if file:
