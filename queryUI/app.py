@@ -15,6 +15,7 @@ options = Options()
 
 
 class App(tk.Tk):
+    """Main application class"""
     def __init__(self):
         super().__init__()
         self.title("queryUI")
@@ -55,6 +56,7 @@ class App(tk.Tk):
         self.geometry("1000x800")
 
     def submit_button_clicked(self):
+        """Submit button clicked"""
         try:
             url = self.entry.url.get()
             method = self.radio.selected.get()
@@ -75,6 +77,7 @@ class App(tk.Tk):
             showerror(title="Error", message=f"{e!r}")
 
     def save_button_clicked(self):
+        """Save button clicked"""
         try:
             file = asksaveasfile(
                 mode="w",
@@ -95,15 +98,18 @@ class App(tk.Tk):
             showerror(title="Error", message=f"{e!r}")
 
     def clipboard_button_clicked(self):
+        """Clipboard button clicked"""
         self.clipboard_clear()
         self.clipboard_append(self.results.text.get("1.0", "end"))
 
     def update_results(self, event=None):
+        """Update results text"""
         if self.last_result is None:
             return
         self.results.set_content(self.last_result.content.decode())
 
     def resize(self, event):
+        """Resize event"""
         other_widgets_height = (
             self.radio.height + options.padding_tight["pady"]*2 +
             self.entry.height + options.padding_tight["pady"]*2 +
